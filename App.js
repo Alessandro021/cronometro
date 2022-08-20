@@ -3,7 +3,16 @@ import React, { Component} from 'react'
 import { View , Text, Image, SafeAreaView, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
   
 class App extends Component{
-
+    constructor(props){
+      super(props);
+      this.state = {
+        numero: 0,
+        botao: "VAI",
+        utimoNumero: null
+      }
+      //variavel do timer do relogio
+      this.timer = null;
+    }
   render(){
     return(
       <View style={styles.container}>
@@ -14,19 +23,61 @@ class App extends Component{
           // style={{width: 100, height: 100}} 
         />
 
-      <Text style={styles.timer}>0.0</Text>
+      <Text style={styles.timer}> { this.state.numero.toFixed(1) } </Text>
 
       <View style={styles.btnArea}>
 
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnTexto}>VAI</Text>
+          <TouchableOpacity style={styles.btn}
+            onPress={()=>{
+
+              if(this.timer != null){
+
+                //Aqui vai parar o timer
+                clearInterval(this.timer)
+                this.timer = null
+
+                this.setState({botao: "VAI"})
+              } else {
+
+                //começa girar o time
+                this.timer = setInterval(()=>{
+                this.setState({numero: this.state.numero + 0.1})
+                }, 100)
+
+                this.setState({botao: "PARAR"})
+              }
+              
+            }}
+          >
+          <Text style={styles.btnTexto}>{this.state.botao}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn}
+             onPress={()=>{
+                if(this.timer != null){
+                  clearInterval(this.timer)
+                  this.timer = null
+                }
+                this.setState({
+                  ultimoNumero: this.state. numero.toFixed(1),
+                  numero: 0,
+                  botao: "VAI"
+                })
+            }}
+          >
            
             <Text style={styles.btnTexto}>LIMPAR</Text>
           </TouchableOpacity>
 
+      </View>
+
+      <View style={styles.areaUltimoNum}>
+          <Text style={styles.textUltimoNum}>
+          {
+            this.state.ultimoNumero > 0 ? 'Ultimo Tempo: ' + this.state.ultimoNumero : ""
+
+          }
+          </Text>
       </View>
 
       </View>
@@ -40,11 +91,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#00aeef",
+    backgroundColor: "#FFe",
   },
   timer:{
     marginTop: -180,
-    color: "#fff",
+    color: "#000",
     fontSize: 60,
     fontWeight: "bold"
   },
@@ -66,6 +117,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     color: "#FFF"
+  },
+  areaUltimoNum:{
+    marginTop: 60,
+  },
+  textUltimoNum:{
+    fontSize: 25,
+    color: "#000",
+    fontStyle: "italic",
+    fontWeight: "bold"
+
   },
   cronometro:{
     width: 350, 
