@@ -8,7 +8,7 @@ class App extends Component{
       this.state = {
         numero: 0,
         botao: "VAI",
-        utimoNumero: null
+        ultimoNumero: null
       }
       //variavel do timer do relogio
       this.timer = null;
@@ -20,7 +20,7 @@ class App extends Component{
         <Image
           source={require('./src/cronometro.png')}
           style={styles.cronometro}
-          // style={{width: 100, height: 100}} 
+          // style={{width: 200, height: 100}} 
         />
 
       <Text style={styles.timer}> { this.state.numero.toFixed(1) } </Text>
